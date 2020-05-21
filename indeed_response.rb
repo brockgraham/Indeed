@@ -64,11 +64,11 @@ class IndeedResponder
         # send_message_button.click
 
         counter += 1
-        puts 'One Fucker Complete!'
+        puts 'One Complete!'
         sleep 1
       end
       @indeed.click_object(@indeed.elements[:back_awaiting])
-      puts 'Twenty Bitches Fucked'
+      puts 'Twenty Sent'
       send_message_to_person
     end
   end
