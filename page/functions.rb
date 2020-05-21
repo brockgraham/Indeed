@@ -1,5 +1,4 @@
 require 'selenium-webdriver'
-require 'inifile'
 
 class Indeed
   attr_accessor :driver

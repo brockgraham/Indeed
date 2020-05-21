@@ -1,4 +1,5 @@
 require_relative 'page/functions'
+require 'inifile'
 
 class IndeedResponder
   @indeed = Indeed.new
