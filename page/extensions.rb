@@ -1,9 +1,9 @@
 require 'selenium-webdriver'
+require_relative 'elements'
 
-class Indeed
+class Extensions
   attr_accessor :driver
   attr_accessor :wait
-  attr_accessor :elements
 
   def initialize
     options = Selenium::WebDriver::Chrome::Options.new
@@ -16,20 +16,7 @@ class Indeed
     @driver = Selenium::WebDriver.for :chrome, options: options
     @wait = Selenium::WebDriver::Wait.new(timeout: 10)
     @driver.navigate.to 'https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2F&tmpl=desktop&service=my&from=gnav-util-homepage&_ga=2.171712096.1797241527.1588699743-345046149.1588699743'
-    @elements = {
-        :email => '#login-email-input',
-        :password => '#login-password-input',
-        :sign_in => '#login-submit-button',
-        :candidates => "a[href='/c#candidates']",
-        :awaiting_review => "div[class='cpqap-CandidateStatus-Tab']",
-        :first_person => "a[data-tn-element='view-candidate']",
-        :check_mark => "span[class='ecl-sentiment-selector-3fVU4 ecl-sentiment-selector-3E4_p']",
-        :message_button =>'#topComposeEmailButton',
-        :dropdown => "span[class='TemplateTools-quickAction highlight']",
-        :dp_option => "span[class='MessageActionItem-title']",
-        :candidates_list => "h3[class='CandidateListItem-name CandidateListItem-text']",
-        :back_awaiting => '#statusFilterDescription'
-    }
+    @elements = Elements.new.elements
   end
 
   def element(element)
@@ -45,17 +32,23 @@ class Indeed
 
   def click_object(identifier)
     @wait.until { element(identifier) }
-    identifier.click
+    click(identifier)
   end
 
   def dynamic_click(identifier, tag, num)
     @wait.until { element("#{identifier} > #{tag}:nth-child(#{num})") }
-    identifier.click
+    click(identifier)
   end
 
   def scroll_into_view(identifier)
     @wait.until { element(identifier) }
-    identifier.location_once_scrolled_into_view
+    element(identifier).location_once_scrolled_into_view
+  end
+
+  private
+
+  def click(element)
+    @driver.find_element(css: element).click
   end
 
 end
